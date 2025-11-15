@@ -1,0 +1,185 @@
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  color: black;
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+    sans-serif;
+}
+
+.app {
+  height: 100vh;
+  padding: 16px;
+  background: #f5f5f5;
+}
+
+.layout {
+  height: 100%;
+  display: grid;
+  grid-template-columns: 1.2fr 1fr 1.8fr; /* left / center / right */
+  gap: 16px;
+}
+
+/* Columns */
+.panel {
+  background: #ffffff;
+  border-radius: 18px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid #dedede;
+}
+
+.subtitle {
+  margin-top: 0;
+  margin-bottom: 12px;
+  font-size: 0.85rem;
+  color: #666;
+}
+
+/* Package list */
+.package-list {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 12px;
+  overflow-y: auto;
+}
+
+.package-item {
+  text-align: left;
+  padding: 10px 12px;
+  border-radius: 12px;
+  border: 1px solid #ddd;
+  background: #fafafa;
+  cursor: pointer;
+  transition: transform 0.1s ease, box-shadow 0.1s ease,
+    background-color 0.1s ease;
+}
+
+.package-item:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+}
+
+.package-item.selected {
+  background: #e6f0ff;
+  border-color: #7aa4ff;
+}
+
+.package-name {
+  font-weight: 600;
+}
+
+.package-status {
+  font-size: 0.85rem;
+  color: #555;
+}
+
+/* Cards */
+.card {
+  border-radius: 16px;
+  border: 1px solid #ddd;
+  padding: 12px 14px;
+  background: #fafafa;
+}
+
+.current-status {
+  margin-bottom: 16px;
+}
+
+.history {
+  flex: 1;
+  overflow-y: auto;
+}
+
+/* Map placeholder */
+.map-placeholder {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-style: dashed;
+  font-style: italic;
+}
+
+/* Button */
+.primary-button {
+  margin-top: 8px;
+  padding: 10px 14px;
+  border-radius: 999px;
+  border: none;
+  background: #2563eb;
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+  /* smooth animation */
+  transition: transform 0.15s ease, box-shadow 0.15s ease,
+    background-color 0.15s ease;
+}
+
+/* hover effect: grows a bit and glows */
+.primary-button:hover {
+  background: #1d4ed8; /* slightly darker blue */
+  transform: translateY(-1px) scale(1.03);
+  box-shadow: 0 8px 18px rgba(37, 99, 235, 0.35);
+}
+
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 50;
+}
+
+.modal {
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 20px 24px;
+  width: 100%;
+  max-width: 380px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+}
+
+.modal-buttons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.modal-label {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 0.9rem;
+  margin-bottom: 16px;
+}
+
+.modal-input {
+  padding: 8px 10px;
+  border-radius: 8px;
+  border: 1px solid #d4d4d4;
+  font-size: 0.95rem;
+}
+
+.secondary-button {
+  padding: 8px 12px;
+  border-radius: 999px;
+  border: 1px solid #d4d4d4;
+  background: #f3f4f6;
+  cursor: pointer;
+}
+
+.secondary-button:hover {
+  background: #e5e7eb;
+}
