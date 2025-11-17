@@ -12,6 +12,11 @@ dist
 dist-ssr
 *.local
 
+# Environment variables (secrets)
+.env
+.env.local
+.env.*.local
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
@@ -22,3 +27,12 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Claude Code directory
+.claude/
+
+# Screenshots and temporary images
+*.png
+*.jpg
+*.jpeg
+*.gif

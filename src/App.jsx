@@ -1,52 +1,117 @@
-import React, { useState } from "react";
+import React from "react";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import "./App.css";
 
-import PackageList from "./components/PackageList.jsx";
-import PackageInfo from "./components/PackageInfo.jsx";
-import DriverMap from "./components/DriverMap.jsx";
-import AddPackageModal from "./components/AddPackageModal.jsx";
+import { AuthProvider, useAuth } from "./contexts/AuthContext";
+import Header from "./components/Header";
+import Login from "./pages/Login";
+import Dashboard from "./pages/Dashboard";
+import DriverDashboard from "./pages/DriverDashboard";
+import DriverRegistration from "./pages/DriverRegistration";
 
-const dummyPackages = [
-  { id: 1, name: "Package #1", status: "Out for delivery" },
-  { id: 2, name: "Package #2", status: "In transit" },
-  { id: 3, name: "Package #3", status: "Delivered" },
-];
+function ProtectedRoute({ children }) {
+  const { isAuthenticated, loading } = useAuth();
 
-export default function App() {
-  const [selectedId, setSelectedId] = useState(dummyPackages[0].id);
-  const [isAddModalOpen, setIsAddModalOpen] = useState(false);
-
-  const selectedPackage = dummyPackages.find((p) => p.id === selectedId);
-
-  function handleAddClick() {
-    setIsAddModalOpen(true);
+  if (loading) {
+    return (
+      <div className="loading-page">
+        <div className="spinner">⟳</div>
+        <p>Loading...</p>
+      </div>
+    );
   }
 
-  function handleAddPackage(packageId) {
-    console.log("New package ID:", packageId);
-    setIsAddModalOpen(false);
+  if (!isAuthenticated) {
+    return <Navigate to="/login" replace />;
   }
+
+  return children;
+}
+
+function RoleBasedRoute({ children, requireRole }) {
+  const { user, isAuthenticated, loading } = useAuth();
+
+  if (loading) {
+    return (
+      <div className="loading-page">
+        <div className="spinner">⟳</div>
+        <p>Loading...</p>
+      </div>
+    );
+  }
+
+  if (!isAuthenticated) {
+    return <Navigate to="/login" replace />;
+  }
+
+  // If role is required and user doesn't have it, redirect appropriately
+  if (requireRole && user?.role !== requireRole) {
+    if (requireRole === "driver") {
+      return <Navigate to="/" replace />;
+    } else if (requireRole === "customer") {
+      return <Navigate to="/driver" replace />;
+    }
+  }
+
+  return children;
+}
+
+function AppContent() {
+  const { isAuthenticated, user, loading } = useAuth();
 
   return (
     <div className="app">
-      <main className="layout">
-        <PackageList
-          packages={dummyPackages}
-          selectedId={selectedId}
-          onSelect={setSelectedId}
-          onAddClick={handleAddClick}
+      {isAuthenticated && <Header />}
+
+      <Routes>
+        <Route path="/login" element={<Login />} />
+
+        {/* Root route - redirect based on user role */}
+        <Route
+          path="/"
+          element={
+            <ProtectedRoute>
+              {!loading && user?.role === "driver" ? (
+                <Navigate to="/driver" replace />
+              ) : (
+                <Dashboard />
+              )}
+            </ProtectedRoute>
+          }
         />
 
-        <PackageInfo pkg={selectedPackage} />
-        <DriverMap />
-      </main>
-
-      {isAddModalOpen && (
-        <AddPackageModal
-          onClose={() => setIsAddModalOpen(false)}
-          onSubmit={handleAddPackage}
+        {/* Driver routes */}
+        <Route
+          path="/driver"
+          element={
+            <RoleBasedRoute requireRole="driver">
+              <DriverDashboard />
+            </RoleBasedRoute>
+          }
         />
-      )}
+
+        {/* Driver registration */}
+        <Route
+          path="/register-driver"
+          element={
+            <ProtectedRoute>
+              <DriverRegistration />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route path="*" element={<Navigate to="/" replace />} />
+      </Routes>
     </div>
+  );
+}
+
+export default function App() {
+  return (
+    <BrowserRouter>
+      <AuthProvider>
+        <AppContent />
+      </AuthProvider>
+    </BrowserRouter>
   );
 }
