@@ -238,6 +238,24 @@ export default function AvailablePackages({ onPackageClaimed }) {
               <span className="package-amount">${pkg.total_amount}</span>
             </div>
 
+            {pkg.package_status && (
+              <div style={{
+                padding: "8px 15px",
+                background: "rgba(255, 255, 255, 0.2)",
+                borderBottom: "1px solid rgba(255, 255, 255, 0.3)",
+                textAlign: "center"
+              }}>
+                <span style={{
+                  color: "white",
+                  fontSize: "12px",
+                  fontWeight: "600",
+                  textTransform: "uppercase"
+                }}>
+                  📦 {pkg.package_status.replace(/_/g, ' ')}
+                </span>
+              </div>
+            )}
+
             <div className="package-body">
               <div className="package-section">
                 <label>Customer</label>

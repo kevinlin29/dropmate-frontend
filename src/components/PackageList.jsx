@@ -43,7 +43,12 @@ export default function PackageList({
                 <div className="package-name">
                   {pkg.tracking_number || `Package #${pkg.id}`}
                 </div>
-                <div className="package-status">{pkg.status || "Unknown"}</div>
+                <div className="package-statuses">
+                  <div className="package-status">{pkg.status || "Unknown"}</div>
+                  {pkg.package_status && (
+                    <div className="package-detail-status">{pkg.package_status}</div>
+                  )}
+                </div>
               </button>
               {onDelete && (
                 <button

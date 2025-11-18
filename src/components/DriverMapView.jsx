@@ -182,33 +182,7 @@ export default function DriverMapView({ delivery }) {
     );
   }, [isLoaded, delivery]);
 
-  if (!delivery) {
-    return (
-      <div className="map-container">
-        <div className="no-delivery">
-          <p>Select a delivery to view map</p>
-        </div>
-
-        <style jsx>{`
-          .map-container {
-            background: white;
-            border-radius: 10px;
-            padding: 20px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-          }
-          .no-delivery {
-            text-align: center;
-            color: #999;
-          }
-        `}</style>
-      </div>
-    );
-  }
-
-  // Calculate map center based on available markers
+  // Calculate map center based on available markers (must be before any returns)
   const center = React.useMemo(() => {
     const points = [];
 
@@ -237,6 +211,32 @@ export default function DriverMapView({ delivery }) {
 
     return { lat: avgLat, lng: avgLng };
   }, [myLocation, delivery]);
+
+  if (!delivery) {
+    return (
+      <div className="map-container">
+        <div className="no-delivery">
+          <p>Select a delivery to view map</p>
+        </div>
+
+        <style jsx>{`
+          .map-container {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+          }
+          .no-delivery {
+            text-align: center;
+            color: #999;
+          }
+        `}</style>
+      </div>
+    );
+  }
 
   // Handle loading states
   if (loadError) {

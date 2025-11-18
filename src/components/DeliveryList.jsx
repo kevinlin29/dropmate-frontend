@@ -105,9 +105,23 @@ export default function DeliveryList({ deliveries, selectedId, onSelect, loading
           >
             <div className="delivery-header">
               <span className="tracking-number">{delivery.tracking_number}</span>
-              <span className={`status status-${delivery.status}`}>
-                {delivery.status}
-              </span>
+              <div style={{ display: "flex", flexDirection: "column", gap: "4px", alignItems: "flex-end" }}>
+                <span className={`status status-${delivery.status}`}>
+                  {delivery.status}
+                </span>
+                {delivery.package_status && (
+                  <span style={{
+                    padding: "2px 8px",
+                    borderRadius: "10px",
+                    fontSize: "11px",
+                    fontWeight: "600",
+                    background: "#e8eeff",
+                    color: "#667eea"
+                  }}>
+                    {delivery.package_status.replace(/_/g, ' ')}
+                  </span>
+                )}
+              </div>
             </div>
 
             <div className="delivery-info">

@@ -12,9 +12,13 @@ async function apiFetch(endpoint, options = {}) {
   if (auth.currentUser) {
     try {
       token = await auth.currentUser.getIdToken();
+      console.log("[API] Token obtained:", token ? `${token.substring(0, 20)}...` : "null");
     } catch (error) {
       console.error("Failed to get Firebase token:", error);
     }
+  } else {
+    console.warn("[API] No authenticated user - auth.currentUser is null");
+    console.warn("[API] Endpoint:", endpoint);
   }
 
   try {

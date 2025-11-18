@@ -62,15 +62,35 @@ export default function PackageInfo({ shipment }) {
 
       <div className="card current-status">
         <h3>Current Status</h3>
-        <p className={`status-badge status-${shipment.status || 'unknown'}`}>
-          {shipment.status?.toUpperCase() || "UNKNOWN"}
-        </p>
+        <div style={{ display: "flex", gap: "8px", flexWrap: "wrap", marginBottom: "12px" }}>
+          <p className={`status-badge status-${shipment.status || 'unknown'}`}>
+            {shipment.status?.toUpperCase() || "UNKNOWN"}
+          </p>
+          {shipment.package_status && (
+            <p className="status-badge package-status-badge" style={{
+              background: "#e8eeff",
+              color: "#667eea",
+              fontSize: "0.8rem"
+            }}>
+              📦 {shipment.package_status.replace(/_/g, ' ').toUpperCase()}
+            </p>
+          )}
+        </div>
 
         <div className="shipment-details">
           <div className="detail-row">
             <span className="detail-label">Tracking Number:</span>
             <span className="detail-value">{shipment.tracking_number}</span>
           </div>
+
+          {shipment.package_status && (
+            <div className="detail-row">
+              <span className="detail-label">Package Status:</span>
+              <span className="detail-value" style={{ color: "#667eea", fontWeight: "500" }}>
+                {shipment.package_status.replace(/_/g, ' ')}
+              </span>
+            </div>
+          )}
 
           {shipment.driver_name && (
             <div className="detail-row">
@@ -109,7 +129,7 @@ export default function PackageInfo({ shipment }) {
               <li key={event.id} className="timeline-item">
                 <div className="timeline-marker"></div>
                 <div className="timeline-content">
-                  <strong>{event.event_type}</strong>
+                  <strong>{event.event_type.replace(/_/g, ' ').toUpperCase()}</strong>
                   {event.description && <p>{event.description}</p>}
                   <small className="timestamp">
                     {new Date(event.occurred_at).toLocaleString()}
